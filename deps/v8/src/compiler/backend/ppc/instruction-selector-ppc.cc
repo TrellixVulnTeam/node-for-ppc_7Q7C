@@ -188,42 +188,28 @@ void InstructionSelector::VisitLoad(Node* node) {
     case MachineRepresentation::kWord16:
       opcode = load_rep.IsSigned() ? kPPC_LoadWordS16 : kPPC_LoadWordU16;
       break;
-    case MachineRepresentation::kWord32:
-      opcode = kPPC_LoadWordU32;
-      break;
-    case MachineRepresentation::kCompressedPointer:  // Fall through.
-    case MachineRepresentation::kCompressed:
-#ifdef V8_COMPRESS_POINTERS
-      opcode = kPPC_LoadWordS32;
-      mode = kInt16Imm_4ByteAligned;
-      break;
-#else
-      UNREACHABLE();
-#endif
-#ifdef V8_COMPRESS_POINTERS
-    case MachineRepresentation::kTaggedSigned:
-      opcode = kPPC_LoadDecompressTaggedSigned;
-      break;
-    case MachineRepresentation::kTaggedPointer:
-      opcode = kPPC_LoadDecompressTaggedPointer;
-      break;
-    case MachineRepresentation::kTagged:
-      opcode = kPPC_LoadDecompressAnyTagged;
-      break;
-#else
+#if !V8_TARGET_ARCH_PPC64
     case MachineRepresentation::kTaggedSigned:   // Fall through.
     case MachineRepresentation::kTaggedPointer:  // Fall through.
     case MachineRepresentation::kTagged:         // Fall through.
 #endif
+    case MachineRepresentation::kWord32:
+      opcode = kPPC_LoadWordU32;
+      break;
+#if V8_TARGET_ARCH_PPC64
+    case MachineRepresentation::kTaggedSigned:   // Fall through.
+    case MachineRepresentation::kTaggedPointer:  // Fall through.
+    case MachineRepresentation::kTagged:         // Fall through.
     case MachineRepresentation::kWord64:
       opcode = kPPC_LoadWord64;
       mode = kInt16Imm_4ByteAligned;
       break;
-    case MachineRepresentation::kSimd128:
-      opcode = kPPC_LoadSimd128;
-      // Vectors do not support MRI mode, only MRR is available.
-      mode = kNoImmediate;
-      break;
+#else
+    case MachineRepresentation::kWord64:
+#endif
+    case MachineRepresentation::kCompressedPointer:  // Fall through.
+    case MachineRepresentation::kCompressed:         // Fall through.
+    case MachineRepresentation::kSimd128:  // Fall through.
     case MachineRepresentation::kNone:
       UNREACHABLE();
   }
