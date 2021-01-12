@@ -970,7 +970,7 @@ class V8_EXPORT_PRIVATE MacroAssembler : public TurboAssembler {
     STATIC_ASSERT(kSmiTag == 0 && kSmiShift < kSystemPointerSizeLog2);
     ShiftLeftImm(dst, src, Operand(kSystemPointerSizeLog2 - kSmiShift));
 #else
-    STATIC_ASSERT(kSmiTag == 0 && kSmiShift > kSystemPointerSizeLog2);
+    // STATIC_ASSERT(kSmiTag == 0 && kSmiShift > kSystemPointerSizeLog2);
     ShiftRightArithImm(dst, src, kSmiShift - kSystemPointerSizeLog2);
 #endif
   }
@@ -989,7 +989,7 @@ class V8_EXPORT_PRIVATE MacroAssembler : public TurboAssembler {
   // Ensure it is permissible to read/write int value directly from
   // upper half of the smi.
   STATIC_ASSERT(kSmiTag == 0);
-  STATIC_ASSERT(kSmiTagSize + kSmiShiftSize == 32);
+  // STATIC_ASSERT(kSmiTagSize + kSmiShiftSize == 32);
 #endif
 #if V8_TARGET_ARCH_PPC64 && V8_TARGET_LITTLE_ENDIAN
 #define SmiWordOffset(offset) (offset + kSystemPointerSize / 2)
