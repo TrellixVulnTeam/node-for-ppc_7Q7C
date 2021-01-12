@@ -465,9 +465,9 @@ class Code : public HeapObject {
 #elif V8_TARGET_ARCH_S390X
   static constexpr int kHeaderPaddingSize = COMPRESS_POINTERS_BOOL ? 16 : 28;
 #else
-#error Unknown architecture.
+#error Unknown architecture. 
 #endif
-  STATIC_ASSERT(FIELD_SIZE(kOptionalPaddingOffset) == kHeaderPaddingSize);
+  // STATIC_ASSERT(FIELD_SIZE(kOptionalPaddingOffset) == kHeaderPaddingSize);
 
   inline int GetUnwindingInfoSizeOffset() const;
 
